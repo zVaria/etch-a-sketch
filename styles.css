@@ -8,11 +8,13 @@ body {
 
 .first-half {
     width: 50%;
+    display: flex;
+    justify-content: center;
 }
 
 .container {
-    height: 500px;
-    width: 500px;
+    height: 900px;
+    width: 900px;
     display: grid;
     grid-template-columns: repeat(16, 1fr);
     grid-template-rows: repeat(16, 1fr);

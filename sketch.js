@@ -2,30 +2,29 @@
 const etchContainer = document.querySelector('.container')
 
 /** 
- * Default rows function, adding to make them dynamic later
+ * Default rows function
  * */
-for(i = 0; i < 16; i++) {
-    const col = document.createElement('div');
-    for(j = 0; j < 16; j++) {
-        const row = document.createElement('div');
-        etchContainer.appendChild(row).className = 'cell'; 
-    }
-    etchContainer.appendChild(col).className = 'cell';
+for(i = 0; i < 16*16; i++) {
+    const grid = document.createElement('div');
+    etchContainer.appendChild(grid).className = 'cell';
+    highlight(grid);
 }
 
-const cell = document.querySelectorAll('.cell');
+/**
+ * Adds a highlight element and also adds all the click elements
+ * @param toBeHighlighted - item to be highlighted
+ */
+function highlight(toBeHighlighted) {
+    toBeHighlighted.addEventListener('mouseover', (e) => {
+        if(toBeHighlighted.style.backgroundColor === 'black') 
+            return;   
+        toBeHighlighted.style.backgroundColor = 'gray';
 
-/** 
- * Highlighting a selected tile & clicking if desired
- * */ 
-cell.forEach(cell => cell.addEventListener('mouseover', (e) => {
-    if(cell.style.backgroundColor === 'black') 
-        return;   
-    cell.style.backgroundColor = 'gray';
-    clickTile(cell)
-    mouseHeldDown(e);
-    leavingTile(cell);
-}));
+        clickTile(toBeHighlighted)
+        mouseHeldDown(e);
+        leavingTile(toBeHighlighted);
+    })
+}
 
 /**
  * If tile has not been clicked return tile to white color
@@ -58,15 +57,21 @@ function mouseHeldDown(e) {
     }
 }
 
+/**
+ * ReGrid the grid after the user inputs a size
+ */
 function reGrid() {
     let size = prompt('Enter new grid size');
-    parseInt(size)
-    for(i = 0; i < size; i++) {
-        const col = document.createElement('div');
-        for(j = 0; j < size; j++) {
-            const row = document.createElement('div');
-            etchContainer.appendChild(row).className = 'cell'; 
-        }
-        etchContainer.appendChild(col).className = 'cell';
+    parseInt(size);
+    
+    etchContainer.style.cssText = 'grid-template-columns: repeat('+size+', 1fr); grid-template-rows: repeat('+size+',1fr)';
+    etchContainer.innerText = '';
+
+    for(i = 0; i < size*size; i++) {
+        const grid = document.createElement('div');
+        etchContainer.appendChild(grid).className = 'cell';
+        highlight(grid);
     }
 }
+
+
